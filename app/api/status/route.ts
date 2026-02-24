@@ -45,7 +45,7 @@ const CHAINS: Record<string, { name: string; path: Record<string, string>; chain
   pars: {
     name: 'Pars',
     path: {
-      mainnet: '/ext/bc/Kk9UDgSiJhzbvU78zSUF9LQmZbajx2qZEtPNKM5b1iE4zXDfB/rpc',
+      mainnet: '/ext/bc/2ZPGRSPzvUfr8nSYigsUj1FYC68U6rcKoePhMSkHSYS4V9UmnS/rpc',
       testnet: '/ext/bc/2GAZhS1vSrkDKNo2txEY4MvBRcsMvUc7nQAUXPbtLFMBrB87ct/rpc',
       devnet: '/ext/bc/2m3UV9zVPKMZJYQyrQWhr49eiQbkhxULVmsTpYTmb11hC1MmQA/rpc',
     },
@@ -58,7 +58,7 @@ const SERVICES = [
   { name: 'Explorer (Testnet)', url: 'https://explore-test.lux.network' },
   { name: 'Explorer (Devnet)', url: 'https://explore-dev.lux.network' },
   { name: 'Exchange', url: 'https://lux.exchange' },
-  { name: 'Bridge', url: 'https://bridge.lux.network' },
+  { name: 'Bridge', url: 'https://bridge.lux.network/api/networks' },
   { name: 'API (Mainnet)', url: 'https://api.lux.network/ext/health' },
   { name: 'API (Testnet)', url: 'https://api.lux-test.network/ext/health' },
   { name: 'API (Devnet)', url: 'https://api.lux-dev.network/ext/health' },
