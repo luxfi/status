@@ -9,92 +9,73 @@ const GATEWAY = {
   devnet: process.env.DEVNET_GATEWAY || 'http://luxd-0.luxd-headless.lux-devnet.svc.cluster.local:9650',
 }
 
+// v5 blockchain IDs (redeployed 2026-03-01 on lux-k8s)
 const CHAINS: Record<string, { name: string; path: Record<string, string>; chainId: Record<string, number> }> = {
   cchain: {
     name: 'C-Chain (LUX)',
     path: { mainnet: '/ext/bc/C/rpc', testnet: '/ext/bc/C/rpc', devnet: '/ext/bc/C/rpc' },
     chainId: { mainnet: 96369, testnet: 96368, devnet: 96370 },
   },
-  zoo: {
-    name: 'Zoo',
-    path: {
-      mainnet: '/ext/bc/pcMkknsTyA5JdYDzvgRQkq4WmPdz99TcAWeezAQYh7Tjh64HN/rpc',
-      testnet: '/ext/bc/2HejgoXvUEDYUYoJLUhQYYadtDSE5qpBLTJKxzYr1AcvkRT9fE/rpc',
-      devnet: '/ext/bc/9caEYTT7d1g57qfh78WfmrnCc8TYVUfWKLPrrrgZnPv11NisX/rpc',
-    },
-    chainId: { mainnet: 200200, testnet: 200201, devnet: 200202 },
-  },
   hanzo: {
     name: 'Hanzo',
     path: {
-      mainnet: '/ext/bc/2ktB8JknYFzLTNWPFk5QHstmmbSx97vAFv5zJUD4BtgU59tZD5/rpc',
-      testnet: '/ext/bc/dU2HC7MkYX56vMDgrtur8CkzTtD1C4MMTqi1MFc6413t2aFAz/rpc',
-      devnet: '/ext/bc/5jTMMEPbJG2xuQzYgUhRsQE9gRm8jvayHsvzQ8xH35HAv6UHC/rpc',
+      mainnet: '/ext/bc/2GiQb73CeJESjc4omFv2YtQHZrRgJf25NXPzAr5J6UNHRcDV2F/rpc',
+      testnet: '/ext/bc/2wbYEFh7ELuovqXhyYeCLvweZrcEgNUoZVJUAtw145qTVAUJxE/rpc',
+      devnet: '/ext/bc/tecXMucYDxwN65mebPE6cvQ9GynG6Y5WEvwGFsY3xVDWHxiqT/rpc',
     },
     chainId: { mainnet: 36963, testnet: 36964, devnet: 36964 },
   },
   spc: {
     name: 'SPC',
     path: {
-      mainnet: '/ext/bc/2jomRDDNY9c4eLS47m7gNUMnf6fNYdmCBHSGX6JHTqzP1W1FgE/rpc',
-      testnet: '/ext/bc/eoMnXFewgFM22caQi35FU4i4hyFdLrPFwNVT54yFzc2WPGnNY/rpc',
-      devnet: '/ext/bc/2PydmLj14vqDhaZgtdb8nVBYc2Z3TUkmqmAwmasiatjEcdhzSk/rpc',
+      mainnet: '/ext/bc/rtjwvtE1tEvrokmpeYdTq7b2zqZgmybKwR5MLjKMGAR1W78dQ/rpc',
+      testnet: '/ext/bc/u4pC2tT61o83pbQ8qwAyfXXGF6nyGFNSwCYHEFcUeESGiNKfu/rpc',
+      devnet: '/ext/bc/213ZsFLRCBSmrii4huQqa6S3SxYPP8ec6dPEn6ad4CtLk3RdXp/rpc',
     },
     chainId: { mainnet: 36911, testnet: 36910, devnet: 36912 },
-  },
-  pars: {
-    name: 'Pars',
-    path: {
-      mainnet: '/ext/bc/2ZPGRSPzvUfr8nSYigsUj1FYC68U6rcKoePhMSkHSYS4V9UmnS/rpc',
-      testnet: '/ext/bc/2GAZhS1vSrkDKNo2txEY4MvBRcsMvUc7nQAUXPbtLFMBrB87ct/rpc',
-      devnet: '/ext/bc/2m3UV9zVPKMZJYQyrQWhr49eiQbkhxULVmsTpYTmb11hC1MmQA/rpc',
-    },
-    chainId: { mainnet: 494949, testnet: 494950, devnet: 494951 },
   },
 }
 
 const SERVICES = [
   { name: 'Explorer (Mainnet)', url: 'https://explore.lux.network' },
-  { name: 'Explorer (Testnet)', url: 'https://explore-test.lux.network' },
-  { name: 'Explorer (Devnet)', url: 'https://explore-dev.lux.network' },
+  { name: 'Explorer Hanzo', url: 'https://explore-hanzo.lux.network' },
+  { name: 'Explorer SPC', url: 'https://explore-spc.lux.network' },
   { name: 'Exchange', url: 'https://lux.exchange' },
-  { name: 'Bridge', url: 'https://bridge.lux.network/api/networks' },
-  { name: 'API (Mainnet)', url: 'https://api.lux.network/ext/health' },
-  { name: 'API (Testnet)', url: 'https://api.lux-test.network/ext/health' },
-  { name: 'API (Devnet)', url: 'https://api.lux-dev.network/ext/health' },
+  { name: 'Bridge', url: 'https://bridge.lux.network' },
+  { name: 'MPC Wallet', url: 'https://mpc.lux.network' },
+  { name: 'API (Mainnet)', url: 'https://api.lux.network/mainnet/ext/health' },
+  { name: 'API (Testnet)', url: 'https://api.lux.network/testnet/ext/health' },
+  { name: 'API (Devnet)', url: 'https://api.lux.network/devnet/ext/health' },
 ]
 
+// Deployed contracts (v5, 2026-03-01 re-genesis)
+// Subnet chains all share same addresses (deployer nonce=0 on fresh chains)
+// C-Chain pending redeploy from nonce=5
 const CONTRACTS: Record<string, Record<string, { address: string; name: string }[]>> = {
-  'C-Chain Testnet': {
-    'Bridge Infrastructure': [
-      { address: '0x134c6d62745bAaeb5591EA213e6096B7793D068f', name: 'Bridge' },
-      { address: '0x3212fEb0EdC8346548B8D794bf5566796357d5f5', name: 'LuxVault' },
-      { address: '0x8D9cD23FFD626C50AD9C9aB69Dbd439174a6CFD2', name: 'LBTC' },
-      { address: '0x606B585428D68450e3D10511e4d7eb170E136E13', name: 'LETH' },
-      { address: '0x4E77Cb2d5227Bfdf039d0B972E5f59467a444C0A', name: 'LUSD' },
-      { address: '0x81c76F35F3c7580384b17F52FFcec3a29dCf3f8b', name: 'LBNB' },
-      { address: '0x015b845982e82153D1debDFC2B0EC089E4c29b47', name: 'LPOL' },
-      { address: '0x8B515632dC7c7403ad2990d38ba8851892E95D11', name: 'LCELO' },
-      { address: '0x54e123C8755AE44D7279fe3D959735547a19AE3f', name: 'LFTM' },
-      { address: '0xAbbc9a75b40Dd3A8eE7BCF6Cb7Be41E67fD5DbA3', name: 'LXDAI' },
-      { address: '0xD1DF647F8b646e32A999457e9B5912c408607CCe', name: 'LSOL' },
-      { address: '0x6FdC02698B84276C4f66023B0924E3a9fd30d5cC', name: 'LTON' },
+  'Mainnet Subnets (Hanzo/SPC)': {
+    'Core Tokens': [
+      { address: '0x548f54dfb32ea6ce4fa3515236696cf3d1b7d26a', name: 'WLUX' },
+      { address: '0xe0f7e9a0cb1688cca453995fd6e19ae4fbd9cbfd', name: 'LETH' },
+      { address: '0x7d7cc8d05bb0f38d80b5ce44b4b069a6fb769468', name: 'LBTC' },
+      { address: '0xc5e4a6f54be469551a342872c1ab83ab46f61b22', name: 'LUSDC' },
+      { address: '0xab95c8b59f68ce922f2f334dfc8bb8f5b0525326', name: 'StakedLUX (sLUX)' },
+    ],
+    'AMM': [
+      { address: '0x84cf0a13db1be8e1f0676405cfcbc8b09692fd1c', name: 'AMMV2Factory' },
+      { address: '0x2382f7a49fa48e1f91bec466c32e1d7f13ec8206', name: 'AMMV2Router' },
+    ],
+    'NFT AMM': [
+      { address: '0xd13ab81f02449b1630ecd940be5fb9cd367225b4', name: 'LinearCurve' },
+      { address: '0xbc92f4e290f8ad03f5348f81a27fb2af3b37ec47', name: 'ExponentialCurve' },
+      { address: '0xb43db9af0c5cacb99f783e30398ee0aee6744212', name: 'LSSVMPairFactory' },
+    ],
+    'DeFi': [
+      { address: '0xd984fed38c98c1eab66e577fd1ddc8dcd88ea799', name: 'Perp' },
     ],
   },
-  'C-Chain Devnet': {
-    'Bridge Infrastructure': [
-      { address: '0x8B515632dC7c7403ad2990d38ba8851892E95D11', name: 'Bridge' },
-      { address: '0x54e123C8755AE44D7279fe3D959735547a19AE3f', name: 'LuxVault' },
-      { address: '0x6AAB89551e94e393185E77537F89C7D3834aFAE1', name: 'LBTC' },
-      { address: '0xEC2e57Af48ee1c51b6898451F08D11b8933b26e2', name: 'LETH' },
-      { address: '0x3dE84d92A21cd384Ab3e0380Dd6c339bfb59d8e3', name: 'LUSD' },
-      { address: '0xe3eA61c1c7f3fF5aB265cDA64167CCBD45F8872d', name: 'LBNB' },
-      { address: '0x3cCC022443d66aaDde31Bd2ffE374F6BFeA794Cb', name: 'LPOL' },
-      { address: '0x8D9cD23FFD626C50AD9C9aB69Dbd439174a6CFD2', name: 'LCELO' },
-      { address: '0x606B585428D68450e3D10511e4d7eb170E136E13', name: 'LFTM' },
-      { address: '0x4E77Cb2d5227Bfdf039d0B972E5f59467a444C0A', name: 'LXDAI' },
-      { address: '0x81c76F35F3c7580384b17F52FFcec3a29dCf3f8b', name: 'LSOL' },
-      { address: '0x015b845982e82153D1debDFC2B0EC089E4c29b47', name: 'LTON' },
+  'C-Chain Mainnet (96369)': {
+    'Status': [
+      { address: '0xEAbCC110fAcBfebabC66Ad6f9E7B67288e720B59', name: 'Deployer (nonce=5, contracts pending)' },
     ],
   },
 }
