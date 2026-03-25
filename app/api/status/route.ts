@@ -4,9 +4,9 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 const GATEWAY = {
-  mainnet: process.env.MAINNET_GATEWAY || 'http://luxd-0.luxd-headless.lux-mainnet.svc.cluster.local:9630',
-  testnet: process.env.TESTNET_GATEWAY || 'http://luxd-0.luxd-headless.lux-testnet.svc.cluster.local:9640',
-  devnet: process.env.DEVNET_GATEWAY || 'http://luxd-0.luxd-headless.lux-devnet.svc.cluster.local:9650',
+  mainnet: process.env.MAINNET_GATEWAY || 'https://api.lux.network/mainnet',
+  testnet: process.env.TESTNET_GATEWAY || 'https://api.lux.network/testnet',
+  devnet: process.env.DEVNET_GATEWAY || 'https://api.lux.network/devnet',
 }
 
 // v5 blockchain IDs (redeployed 2026-03-01 on lux-k8s)
