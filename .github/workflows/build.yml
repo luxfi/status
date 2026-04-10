@@ -2,7 +2,8 @@ name: Build and Push Docker Image
 
 on:
   push:
-    branches: [main, test, dev]
+    branches: [main, dev, test]
+    tags: ['v*']
   workflow_dispatch:
 
 jobs:
