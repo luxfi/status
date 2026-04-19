@@ -2,22 +2,22 @@
   "name": "@luxfi/status",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev -p 3333",
-    "build": "opennextjs-cloudflare build",
-    "deploy": "opennextjs-cloudflare build && wrangler deploy",
-    "start": "next start -p 3333"
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --port 3000",
+    "typecheck": "tsc -b --noEmit"
   },
   "dependencies": {
-    "next": "^16.1.6",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@opennextjs/cloudflare": "^1.17.3",
-    "@types/node": "^25.3.3",
-    "@types/react": "^19.2.14",
-    "typescript": "^5.9.3",
-    "wrangler": "^4.77.0"
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.7.0",
+    "vite": "^8.0.0"
   }
 }
