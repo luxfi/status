@@ -1,4 +1,4 @@
-# LLM.md - Lux Network Status
+# Lux Network Status
 
 ## Overview
 Real-time status dashboard for the Lux blockchain network, subnets, and services. Vite 8 + React 19 SPA.
