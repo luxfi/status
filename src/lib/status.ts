@@ -1,4 +1,4 @@
-import { CHAINS, GATEWAY, NETWORKS, SERVICES } from './chains'
+import { CHAINS, NETWORKS, SERVICES } from './chains'
 import type { Network } from './chains'
 
 export interface ChainNetworkStatus {
@@ -86,7 +86,7 @@ export async function fetchStatus(): Promise<StatusSnapshot> {
 
   CHAINS.forEach((chain, ci) => {
     for (const net of NETWORKS) {
-      const url = GATEWAY[net] + chain.path[net]
+      const url = chain.url[net]
       tasks.push(
         rpcBlockNumber(url).then((block) => {
           chainStatuses[ci].networks[net] = {

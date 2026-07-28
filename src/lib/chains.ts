@@ -1,45 +1,45 @@
 export const NETWORKS = ['mainnet', 'testnet', 'devnet'] as const
 export type Network = (typeof NETWORKS)[number]
 
-export const GATEWAY: Record<Network, string> = {
-  mainnet: 'https://api.lux.network/mainnet',
-  testnet: 'https://api.lux.network/testnet',
-  devnet: 'https://api.lux.network/devnet',
-}
+// The network is chosen by host, never by a path segment, and every EVM
+// answers on the same path: /v1/bc/C/rpc. See lux.network/docs/api-reference.
+const RPC = '/v1/bc/C/rpc'
+const hosts = (org: string): Record<Network, string> => ({
+  mainnet: `https://api.${org}.network${RPC}`,
+  testnet: `https://api.${org}-test.network${RPC}`,
+  devnet: `https://api.${org}-dev.network${RPC}`,
+})
 
 export interface ChainDef {
   id: string
   name: string
-  path: Record<Network, string>
+  url: Record<Network, string>
   chainId: Record<Network, number>
 }
 
-// v5 blockchain IDs (redeployed 2026-03-01 on lux-k8s)
 export const CHAINS: ChainDef[] = [
   {
     id: 'cchain',
     name: 'C-Chain (LUX)',
-    path: { mainnet: '/ext/bc/C/rpc', testnet: '/ext/bc/C/rpc', devnet: '/ext/bc/C/rpc' },
-    chainId: { mainnet: 96369, testnet: 96368, devnet: 96370 },
+    url: hosts('lux'),
+    chainId: { mainnet: 96369, testnet: 96368, devnet: 96367 },
+  },
+  {
+    id: 'zoo',
+    name: 'Zoo',
+    url: hosts('zoo'),
+    chainId: { mainnet: 200200, testnet: 200201, devnet: 200202 },
   },
   {
     id: 'hanzo',
     name: 'Hanzo',
-    path: {
-      mainnet: '/ext/bc/2GiQb73CeJESjc4omFv2YtQHZrRgJf25NXPzAr5J6UNHRcDV2F/rpc',
-      testnet: '/ext/bc/2wbYEFh7ELuovqXhyYeCLvweZrcEgNUoZVJUAtw145qTVAUJxE/rpc',
-      devnet: '/ext/bc/tecXMucYDxwN65mebPE6cvQ9GynG6Y5WEvwGFsY3xVDWHxiqT/rpc',
-    },
-    chainId: { mainnet: 36963, testnet: 36964, devnet: 36964 },
+    url: hosts('hanzo'),
+    chainId: { mainnet: 36963, testnet: 36964, devnet: 36965 },
   },
   {
     id: 'spc',
     name: 'SPC',
-    path: {
-      mainnet: '/ext/bc/rtjwvtE1tEvrokmpeYdTq7b2zqZgmybKwR5MLjKMGAR1W78dQ/rpc',
-      testnet: '/ext/bc/u4pC2tT61o83pbQ8qwAyfXXGF6nyGFNSwCYHEFcUeESGiNKfu/rpc',
-      devnet: '/ext/bc/213ZsFLRCBSmrii4huQqa6S3SxYPP8ec6dPEn6ad4CtLk3RdXp/rpc',
-    },
+    url: hosts('spc'),
     chainId: { mainnet: 36911, testnet: 36910, devnet: 36912 },
   },
 ]
@@ -56,9 +56,9 @@ export const SERVICES: ServiceDef[] = [
   { name: 'Exchange', url: 'https://lux.exchange' },
   { name: 'Bridge', url: 'https://bridge.lux.network' },
   { name: 'MPC Wallet', url: 'https://mpc.lux.network' },
-  { name: 'API (Mainnet)', url: 'https://api.lux.network/mainnet/ext/health' },
-  { name: 'API (Testnet)', url: 'https://api.lux.network/testnet/ext/health' },
-  { name: 'API (Devnet)', url: 'https://api.lux.network/devnet/ext/health' },
+  { name: 'API (Mainnet)', url: 'https://api.lux.network/v1/health' },
+  { name: 'API (Testnet)', url: 'https://api.lux-test.network/v1/health' },
+  { name: 'API (Devnet)', url: 'https://api.lux-dev.network/v1/health' },
 ]
 
 export interface ContractDef {
