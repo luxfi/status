@@ -2,8 +2,8 @@ export const NETWORKS = ['mainnet', 'testnet', 'devnet'] as const
 export type Network = (typeof NETWORKS)[number]
 
 // The network is chosen by host, never by a path segment, and every EVM
-// answers on the same path: /v1/bc/C/rpc. See lux.network/docs/api-reference.
-const RPC = '/v1/bc/C/rpc'
+// answers on the same path: /v1/chain/C/rpc. See lux.network/docs/api-reference.
+const RPC = '/v1/chain/C/rpc'
 const hosts = (org: string): Record<Network, string> => ({
   mainnet: `https://api.${org}.network${RPC}`,
   testnet: `https://api.${org}-test.network${RPC}`,
